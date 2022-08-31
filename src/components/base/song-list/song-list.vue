@@ -32,6 +32,7 @@
       selectItem(song, index) {
         this.$emit('select', { song, index })
       },
+      // 根据 index 渲染不同的图标
       getRankCls(index) {
         if (index <= 2) {
           return `icon icon${index}`

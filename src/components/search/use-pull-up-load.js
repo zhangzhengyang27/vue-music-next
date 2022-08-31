@@ -22,6 +22,7 @@ export default function usePullUpLoad(requestData, preventPullUpLoad) {
 
     async function pullingUpHandler() {
       if (preventPullUpLoad.value) {
+        // 结束这次上拉操作
         scrollVal.finishPullUp()
         return
       }
