@@ -6,16 +6,8 @@
           <div class="confirm-content">
             <p class="text">{{text}}</p>
             <div class="operate">
-              <div
-                class="operate-btn left"
-                @click="confirm"
-              >{{confirmBtnText}}
-              </div>
-              <div
-                class="operate-btn"
-                @click="cancel"
-              >{{cancelBtnText}}
-              </div>
+              <div class="operate-btn left" @click="confirm">{{confirmBtnText}}</div>
+              <div class="operate-btn" @click="cancel">{{cancelBtnText}}</div>
             </div>
           </div>
         </div>

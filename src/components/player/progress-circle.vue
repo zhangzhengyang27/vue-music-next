@@ -24,50 +24,54 @@
         :stroke-dashoffset="dashOffset"
       />
     </svg>
+    <!-- 插入播放状态的 icon   -->
     <slot></slot>
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'progress-circle',
-    props: {
-      radius: {
-        type: Number,
-        default: 100
-      },
-      progress: {
-        type: Number,
-        default: 0
-      }
+export default {
+  name: 'progress-circle',
+  props: {
+    radius: {
+      type: Number,
+      default: 100
     },
-    data() {
-      return {
-        dashArray: Math.PI * 100
-      }
-    },
-    computed: {
-      dashOffset() {
-        return (1 - this.progress) * this.dashArray
-      }
+    progress: {
+      type: Number,
+      default: 0
+    }
+  },
+  data() {
+    return {
+      dashArray: Math.PI * 100
+    }
+  },
+  computed: {
+    dashOffset() {
+      return (1 - this.progress) * this.dashArray
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-  .progress-circle {
-    position: relative;
-    circle {
-      stroke-width: 8px;
-      transform-origin: center;
-      &.progress-background {
-        transform: scale(0.9);
-        stroke: $color-theme-d;
-      }
-      &.progress-bar {
-        transform: scale(0.9) rotate(-90deg);
-        stroke: $color-theme;
-      }
+.progress-circle {
+  position: relative;
+
+  circle {
+    stroke-width: 8px;
+    transform-origin: center;
+
+    &.progress-background {
+      transform: scale(0.9);
+      stroke: $color-theme-d;
+    }
+
+    &.progress-bar {
+      transform: scale(0.9) rotate(-90deg);
+      stroke: $color-theme;
     }
   }
+}
 </style>

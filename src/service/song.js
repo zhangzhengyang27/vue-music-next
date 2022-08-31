@@ -21,6 +21,7 @@ export function processSongs(songs) {
   })
 }
 
+// 歌词的缓存
 const lyricMap = {}
 
 export function getLyric(song) {

@@ -14,6 +14,7 @@
   import { getAlbum } from '@/service/recommend'
   import { ALBUM_KEY } from '@/assets/js/constant'
 
+  // 通过函数创建组件
   export default createDetailComponent('album', ALBUM_KEY, getAlbum)
 </script>
 

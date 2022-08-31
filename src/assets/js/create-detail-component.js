@@ -16,6 +16,7 @@ export default function createDetailComponent(name, key, fetch) {
       }
     },
     computed: {
+      // 解决页面刷新，报错的问题，主要是利用缓存
       computedData() {
         let ret = null
         const data = this.data
@@ -40,7 +41,7 @@ export default function createDetailComponent(name, key, fetch) {
     },
     async created() {
       const data = this.computedData
-      // 如果data为null,不执行后面的逻辑，退回到以及路由
+      // 如果data为null,不执行后面的逻辑，退回到上级路由
       if (!data) {
         const path = this.$route.matched[0].path
         this.$router.push({
@@ -49,6 +50,7 @@ export default function createDetailComponent(name, key, fetch) {
         return
       }
       const result = await fetch(data)
+      // 获取歌曲的地址
       this.songs = await processSongs(result.songs)
       this.loading = false
     }

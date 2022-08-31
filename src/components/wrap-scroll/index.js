@@ -2,6 +2,7 @@ import { h, mergeProps, withCtx, renderSlot, ref, computed, watch, nextTick } fr
 import Scroll from '@/components/base/scroll/scroll'
 import { useStore } from 'vuex'
 
+// 高阶组件，主要是为了处理scroll组件的刷新
 export default {
   name: 'wrap-scroll',
   props: Scroll.props,

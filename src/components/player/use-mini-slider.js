@@ -23,6 +23,7 @@ export default function useMiniSlider() {
     watch(sliderShow, async (newSliderShow) => {
       if (newSliderShow) {
         await nextTick()
+        // 确保sliderVal只初始化一次
         if (!sliderVal) {
           sliderVal = slider.value = new BScroll(sliderWrapperRef.value, {
             click: true,
@@ -37,6 +38,7 @@ export default function useMiniSlider() {
             }
           })
 
+          // 修改当前播放歌曲的索引
           sliderVal.on('slidePageChanged', ({ pageX }) => {
             store.commit('setCurrentIndex', pageX)
           })

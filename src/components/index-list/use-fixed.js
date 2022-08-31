@@ -4,8 +4,9 @@ import { ref, watch, computed, nextTick } from 'vue'
 export default function useFixed(props) {
   const TITLE_HEIGHT = 30
   const groupRef = ref(null)
-  // 高度数组
+  // 每个区间的高度数组
   const listHeights = ref([])
+  // 记录滚动值
   const scrollY = ref(0)
   // 当前落在区域的索引
   const currentIndex = ref(0)
@@ -20,8 +21,10 @@ export default function useFixed(props) {
     return currentGroup ? currentGroup.title : ''
   })
 
+  // 计算标题的样式，标题需要设置偏移量
   const fixedStyle = computed(() => {
     const distanceVal = distance.value
+    // 这里的 diff 是一个负值
     const diff = (distanceVal > 0 && distanceVal < TITLE_HEIGHT) ? distanceVal - TITLE_HEIGHT : 0
     return {
       transform: `translate3d(0,${diff}px,0)`
@@ -34,7 +37,7 @@ export default function useFixed(props) {
     calculate()
   })
 
-  // 监听scrollY的值
+  // 监听scrollY的值，确定滚动的区间
   watch(scrollY, (newY) => {
     const listHeightsVal = listHeights.value
     for (let i = 0; i < listHeightsVal.length - 1; i++) {
@@ -54,7 +57,7 @@ export default function useFixed(props) {
     const listHeightsVal = listHeights.value
     // 第一个组的高度为0
     let height = 0
-
+    // 清空数组
     listHeightsVal.length = 0
     listHeightsVal.push(height)
 

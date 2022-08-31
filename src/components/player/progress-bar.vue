@@ -60,6 +60,7 @@ export default {
       // 偏移的横向距离
       const delta = e.touches[0].pageX - this.touch.x1
       const tempWidth = this.touch.beginWidth + delta
+      // 整个进度条的宽度
       const barWidth = this.$el.clientWidth - progressBtnWidth
       const progress = Math.min(1, Math.max(tempWidth / barWidth, 0))
       // 计算offset的距离
@@ -81,6 +82,7 @@ export default {
     },
     // progress最大值为1
     setOffset(progress) {
+      // this.$el = <div class="bar-inner">
       const barWidth = this.$el.clientWidth - progressBtnWidth
       this.offset = barWidth * progress
     }

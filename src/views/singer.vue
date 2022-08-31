@@ -1,9 +1,6 @@
 <template>
   <div class="singer" v-loading="!singers.length">
-    <index-list
-      :data="singers"
-      @select="selectSinger"
-    ></index-list>
+    <index-list :data="singers" @select="selectSinger"></index-list>
     <router-view v-slot="{ Component }">
       <!-- 动画组件效果 appear属性 进入也是有动画的效果 -->
       <transition appear name="slide">

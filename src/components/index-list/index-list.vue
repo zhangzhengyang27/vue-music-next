@@ -1,25 +1,11 @@
 <template>
   <!-- probe-type 可选值1、2、3 决定是否派发scroll事件，对页面的性能有影响。为3时，任何时候都派发scroll事件，包括scrollTo -->
-  <scroll
-    class="index-list"
-    :probe-type="3"
-    @scroll="onScroll"
-    ref="scrollRef"
-  >
+  <scroll class="index-list" :probe-type="3" @scroll="onScroll" ref="scrollRef">
     <ul ref="groupRef">
-      <li
-        v-for="group in data"
-        :key="group.title"
-        class="group"
-      >
+      <li v-for="group in data" :key="group.title" class="group">
         <h2 class="title">{{group.title}}</h2>
         <ul>
-          <li
-            v-for="item in group.list"
-            :key="item.id"
-            class="item"
-            @click="onItemClick(item)"
-          >
+          <li v-for="item in group.list" :key="item.id" class="item" @click="onItemClick(item)">
             <img class="avatar" v-lazy="item.pic">
             <span class="name">{{item.name}}</span>
           </li>
@@ -27,11 +13,7 @@
       </li>
     </ul>
     <!-- 固定的title -->
-    <div
-      class="fixed"
-      v-show="fixedTitle"
-      :style="fixedStyle"
-    >
+    <div class="fixed" v-show="fixedTitle" :style="fixedStyle">
       <div class="fixed-title">{{fixedTitle}}</div>
     </div>
     <!-- 快速导航 -->
@@ -84,13 +66,13 @@
 
       return {
         onItemClick,
-        // fixed
+        // ---fixed---
         groupRef,
         onScroll,
         fixedTitle,
         fixedStyle,
         currentIndex,
-        // shortcut
+        // ---shortcut---
         shortcutList,
         scrollRef,
         onShortcutTouchStart,

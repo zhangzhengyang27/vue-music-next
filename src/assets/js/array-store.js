@@ -1,11 +1,12 @@
 import storage from 'good-storage'
 
-// compare 自定义比较规则 只保存maxLen的数据
+// findIndex 函数中 compare 自定义比较规则 只保存maxLen的数据
 function inertArray(arr, val, compare, maxLen) {
   const index = arr.findIndex(compare)
   if (index === 0) {
     return
   }
+  // 已经存在则删除
   if (index > 0) {
     arr.splice(index, 1)
   }
@@ -40,7 +41,7 @@ export function remove(key, compare) {
   return items
 }
 
-// 夹杂数据
+// 加载数据
 export function load(key) {
   return storage.get(key, [])
 }

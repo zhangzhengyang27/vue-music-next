@@ -15,12 +15,7 @@
         <div class="recommend-list">
           <h1 class="list-title" v-show="!loading">热门歌单推荐</h1>
           <ul>
-            <li
-              v-for="item in albums"
-              class="item"
-              :key="item.id"
-              @click="selectItem(item)"
-            >
+            <li v-for="item in albums" class="item" :key="item.id" @click="selectItem(item)">
               <div class="icon">
                 <img width="60" height="60" v-lazy="item.pic">
               </div>

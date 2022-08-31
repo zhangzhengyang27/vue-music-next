@@ -49,6 +49,7 @@ export default function createLoadingLikeDirective(Comp) {
     if (['absolute', 'fixed', 'relative'].indexOf(style.position) === -1) {
       addClass(el, relativeCls)
     }
+    // 将自定义组件挂载到作用的dom上
     el.appendChild(el[name].instance.$el)
   }
 

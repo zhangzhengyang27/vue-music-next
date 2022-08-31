@@ -5,11 +5,13 @@ export default function useMiddleInteractive() {
   const middleLStyle = ref(null)
   const middleRStyle = ref(null)
 
+  // 不需要做响应式
   const touch = {}
   let currentView = 'cd'
 
   function onMiddleTouchStart(e) {
     touch.startX = e.touches[0].pageX
+    // 解决斜向滚动
     touch.startY = e.touches[0].pageY
     touch.directionLocked = ''
   }
@@ -20,17 +22,19 @@ export default function useMiddleInteractive() {
 
     const absDeltaX = Math.abs(deltaX)
     const absDeltaY = Math.abs(deltaY)
-
+    // 没有设置的时候
     if (!touch.directionLocked) {
       touch.directionLocked = absDeltaX >= absDeltaY ? 'h' : 'v'
     }
 
+    // v 是垂直方向的滚动
     if (touch.directionLocked === 'v') {
       return
     }
 
     const left = currentView === 'cd' ? 0 : -window.innerWidth
     const offsetWidth = Math.min(0, Math.max(-window.innerWidth, left + deltaX))
+    // 偏移的比例
     touch.percent = Math.abs(offsetWidth / window.innerWidth)
 
     if (currentView === 'cd') {

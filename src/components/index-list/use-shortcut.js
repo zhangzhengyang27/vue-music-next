@@ -13,11 +13,11 @@ export default function useShortcut(props, groupRef) {
   const touch = {}
 
   function onShortcutTouchStart(e) {
-    // e.target.dataset.index 不一定存在
+    // 脱离数字列表的时候没有e.target.dataset.index
     if (e.target.dataset.index) {
       const anchorIndex = parseInt(e.target.dataset.index)
       touch.y1 = e.touches[0].pageY
-      // 保留索引
+      // 保留索引 anchorIndex是初识的索引
       touch.anchorIndex = anchorIndex
       scrollTo(anchorIndex)
     }

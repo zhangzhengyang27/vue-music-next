@@ -17,6 +17,7 @@ export function randomPlay({ commit }, list) {
   commit('setSequenceList', list)
   commit('setPlayingState', true)
   commit('setFullScreen', true)
+  // 打乱原来的顺序
   commit('setPlaylist', shuffle(list))
   commit('setCurrentIndex', 0)
 }
@@ -31,6 +32,7 @@ export function changeMode({ commit, state, getters }, mode) {
     // 顺序或者是循环播放
     commit('setPlaylist', state.sequenceList)
   }
+  // 主要解决随机播放的时候，索引值改变了  在新的列表中，根据 id 找到新的索引
   const index = state.playlist.findIndex((song) => {
     return song.id === currentId
   })
@@ -39,7 +41,9 @@ export function changeMode({ commit, state, getters }, mode) {
   commit('setPlayMode', mode)
 }
 
+// 删除某一首歌
 export function removeSong({ commit, state }, song) {
+  // slice()操作一个副本
   const sequenceList = state.sequenceList.slice()
   const playlist = state.playlist.slice()
 
@@ -53,6 +57,7 @@ export function removeSong({ commit, state }, song) {
   playlist.splice(playIndex, 1)
 
   let currentIndex = state.currentIndex
+  // 如果删除的歌曲在当前播放的歌曲之前，currentIndex要减减；或者删除最后一个
   if (playIndex < currentIndex || currentIndex === playlist.length) {
     currentIndex--
   }

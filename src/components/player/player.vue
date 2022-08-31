@@ -1,5 +1,6 @@
 <template>
   <div class="player" v-show="playlist.length">
+    <!-- 添加过渡动画   -->
     <transition name="normal" @enter="enter" @after-enter="afterEnter" @leave="leave" @after-leave="afterLeave">
       <div class="normal-player" v-show="fullScreen">
         <div class="background">
@@ -29,6 +30,7 @@
               <div class="playing-lyric">{{ playingLyric }}</div>
             </div>
           </div>
+          <!-- 右侧的歌词 -->
           <scroll class="middle-r" ref="lyricScrollRef" :style="middleRStyle">
             <div class="lyric-wrapper">
               <div v-if="currentLyric" ref="lyricListRef">
@@ -37,12 +39,14 @@
                   {{ line.txt }}
                 </p>
               </div>
+              <!-- 处理纯音乐的情况 -->
               <div class="pure-music" v-show="pureMusicLyric">
                 <p>{{ pureMusicLyric }}</p>
               </div>
             </div>
           </scroll>
         </div>
+        <!-- 下面的进度条与操作图标 -->
         <div class="bottom">
           <div class="dot-wrapper">
             <span class="dot" :class="{'active':currentShow==='cd'}"></span>
@@ -90,6 +94,7 @@
     <!-- 播放暂停的时候，会触发pause的事件，我们可以监听这个事件去做判断 -->
     <!-- @timeupdate="updateTime"-->
     <!-- @ended="end" 歌曲播放结束后会触发的事件 而且结束后会触发pause事件 -->
+    <!-- @canplay="ready"    -->
     <audio
       ref="audioRef"
       @pause="pause"
@@ -102,7 +107,7 @@
 </template>
 
 <script>
-// 获取vuex中state中的数据
+// useStore 获取vuex中state中的数据
 import { useStore } from 'vuex'
 import { computed, watch, ref, nextTick } from 'vue'
 // modeIcon,modeText,changeMode
@@ -130,6 +135,7 @@ export default {
     // data
     const audioRef = ref(null)
     const barRef = ref(null)
+    // 判断歌曲是否可以播放
     const songReady = ref(false)
     const currentTime = ref(0)
     let progressChanging = false
@@ -144,20 +150,10 @@ export default {
     const currentIndex = computed(() => store.state.currentIndex)
     const playMode = computed(() => store.state.playMode)
 
-    // hooks
-    const {
-      modeIcon,
-      changeMode
-    } = useMode()
-    const {
-      getFavoriteIcon,
-      toggleFavorite
-    } = useFavorite()
-    const {
-      cdCls,
-      cdRef,
-      cdImageRef
-    } = useCd()
+    // 改变播放模式的 hooks
+    const { modeIcon, changeMode } = useMode()
+    const { getFavoriteIcon, toggleFavorite } = useFavorite()
+    const { cdCls, cdRef, cdImageRef } = useCd()
     const {
       currentLyric,
       currentLineNum,
@@ -191,7 +187,7 @@ export default {
     // computed
     const playlist = computed(() => store.state.playlist)
 
-    // 根据playing状态，判断显示播放的图标
+    // 根据playing状态，判断显示播放的图标，是播放还是暂停
     const playIcon = computed(() => {
       return playing.value ? 'icon-pause' : 'icon-play'
     })
@@ -201,11 +197,12 @@ export default {
       return currentTime.value / currentSong.value.duration
     })
 
+    // 前进后退按钮，disabled 样式
     const disableCls = computed(() => {
       return songReady.value ? '' : 'disable'
     })
 
-    // watch
+    // watch 切歌的操作
     watch(currentSong, (newSong) => {
       if (!newSong.id || !newSong.url) {
         return
@@ -219,8 +216,9 @@ export default {
       store.commit('setPlayingState', true)
     })
 
-    // 观察playing的状态，播放或暂停音乐
+    // 观察 playing 的状态，播放或暂停音乐
     watch(playing, (newPlaying) => {
+      // 数据没有准备好，就直接返回
       if (!songReady.value) {
         return
       }
@@ -234,6 +232,7 @@ export default {
       }
     })
 
+    // 监听 fullScreen，调用实例的方法
     watch(fullScreen, async (newFullScreen) => {
       if (newFullScreen) {
         await nextTick()
@@ -259,8 +258,10 @@ export default {
       store.commit('setPlayingState', false)
     }
 
+    // 前进按钮
     function prev() {
       const list = playlist.value
+      // 没有歌曲
       if (!songReady.value || !list.length) {
         return
       }
@@ -296,6 +297,7 @@ export default {
       }
     }
 
+    // 循环播放歌曲
     function loop() {
       const audioEl = audioRef.value
       // 播放事件为0，从头播放
@@ -314,22 +316,26 @@ export default {
       savePlay(currentSong.value)
     }
 
+    // 播放失败是，允许可以前进和后退
     function error() {
       songReady.value = true
     }
 
-    // 修改currentTime
+    // 更新 currentTime
     function updateTime(e) {
       if (!progressChanging) {
         currentTime.value = e.target.currentTime
       }
     }
 
+    // 拖动过程中，正常播放
     function onProgressChanging(progress) {
       progressChanging = true
       // 计算currentTime的时间
       currentTime.value = currentSong.value.duration * progress
+      // 同步位置
       playLyric()
+      // 拖动不松开的时候，歌词不滚动
       stopLyric()
     }
 
@@ -340,6 +346,7 @@ export default {
         // 开启播放
         store.commit('setPlayingState', true)
       }
+      // 同步拖动的歌词位置
       playLyric()
     }
 
@@ -662,6 +669,7 @@ export default {
       }
     }
 
+    // 设置过渡动画效果
     &.normal-enter-active, &.normal-leave-active {
       transition: all .6s;
 
